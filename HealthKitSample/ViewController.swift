@@ -26,11 +26,11 @@ final class ViewController: UIViewController {
         let quantityType = HKObjectType.quantityType(forIdentifier: .stepCount)!
         
         /// サンプルデータの検索条件を指定する。（サンプルデータのフィルタリング）
-        /// 条件は、取得期間（開始日〜終了日）を指定することができる。
+        /// 条件は、取得したいサンプルデータの期間（開始日〜終了日）を指定する。
         ///
         /// - Parameters:
-        ///   - withStart: 今回は、今日を含めた過去８日間の歩数を取得したいため、今日−７日の日付を渡す。
-        ///   - end: 今日の日付を渡す。
+        ///   - withStart: サンプルデータの取得開始日を指定する。
+        ///   - end: サンプルデータの終了日を指定する。
         ///   - options:取得範囲の指定（？）→ オプションの機能が分かっていません。
         ///             （strictStartDate指定で開始日から狙ったサンプルデータは取得できています）
         ///             （こちらも詳しい情報ありましたらコメントいただけると幸いです）
@@ -42,9 +42,9 @@ final class ViewController: UIViewController {
         /// サンプルデータを取得するためのクエリを生成します。
         ///
         /// - Parameters:
-        ///   - quantityType: 取得したいサンプルデータのタイプを指定する。今回は歩数。
-        ///   - quantitySamplePredicate: サンプルデータの検索条件。
-        ///   - options: サンプルデータの計算方法を指定するオプション。今回は１日の合計歩数がほしいので `cumulativeSum` を指定する。
+        ///   - quantityType: サンプルデータのタイプを指定する。（今回は歩数。）
+        ///   - quantitySamplePredicate: サンプルデータの検索条件。（取得したいデータの期間）
+        ///   - options: サンプルデータの計算方法を指定する。今回は１日の合計歩数がほしいので `cumulativeSum` を指定する。
         ///   - anchorDate: 基準となる日付（時間を数直線とした場合に、アンカー日付は原点で過去・未来両方に伸びる目盛りが作成される。（Documentより））
         ///                 今回の場合、開始日にアンカーを指定してあげれば、指定した機関のサンプルが取得できます。
         ///                 （こちらも詳しい情報ありましたらコメントいただけると幸いです）
