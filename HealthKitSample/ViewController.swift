@@ -12,8 +12,8 @@ final class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        /// アクセス許可を求めるデータタイプを Set型 で格納する。
-        /// 今回は歩数を取得したいので .stepCount を指定する。
+        /// アクセスしたいデータ項目のタイプを `Set型` で格納する。
+        /// 今回は歩数を取得したいので `.stepCount` を指定する。
         let readDataTypes = Set([HKObjectType.quantityType(forIdentifier: .stepCount)!])
         /// ユーザーにアクセス許可を求める。
         HKHealthStore().requestAuthorization(toShare: nil, read: readDataTypes) { _, _ in }
@@ -71,9 +71,11 @@ final class ViewController: UIViewController {
                     /// 取得した歩数を配列に格納する。
                     let stepValue = quantity.doubleValue(for: HKUnit.count())
                     sampleArray.append(floor(stepValue))
+                    print("sampleArray", sampleArray)
                 } else {
                     // No Data
                     sampleArray.append(0.0)
+                    print("sampleArray", sampleArray)
                 }
             }
         }
