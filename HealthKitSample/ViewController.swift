@@ -12,17 +12,15 @@ final class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        /// アクセス許可を求めるデータタイプを Set型 で格納します。
-        /// 今回は歩数を取得したいので .stepCount を指定します。
+        /// アクセス許可を求めるデータタイプを Set型 で格納する。
+        /// 今回は歩数を取得したいので .stepCount を指定する。
         let readDataTypes = Set([HKObjectType.quantityType(forIdentifier: .stepCount)!])
-        /// ユーザーにアクセス許可を求める
+        /// ユーザーにアクセス許可を求める。
         HKHealthStore().requestAuthorization(toShare: nil, read: readDataTypes) { _, _ in }
         self.getSteps()
     }
     
     private func getSteps() {
-        /// HealthKit に対して開始日・終了日・データタイプをリクエストして、指定した日付分の歩数を取得する。
-        
         let startDate = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
         var sampleArray: [Double] = []
         let quantityType = HKObjectType.quantityType(forIdentifier: .stepCount)!
@@ -63,7 +61,7 @@ final class ViewController: UIViewController {
         query.initialResultsHandler = { _, results, _ in
             /// `results (HKStatisticsCollection?)` からクエリ結果を取り出す。
             guard let statsCollection = results else { return }
-            /// クエリ結果から期間（開始日・終了日）を指定して歩数を取り出す。
+            /// クエリ結果から期間（開始日・終了日）を指定して歩数の統計情報を取り出す。
             statsCollection.enumerateStatistics(from: startDate, to: Date()) { statistics, _ in
                 /// `statistics` から最小単位（今回は１日分の歩数）のサンプルデータが返ってくる。
                 /// `sumQuantity` でサンプルデータの合計（１日の合計歩数）を取得する。
