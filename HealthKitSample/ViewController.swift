@@ -47,9 +47,9 @@ final class ViewController: UIViewController {
         ///
         /// - Parameters:
         ///   - quantityType: 取得したいサンプルデータのタイプを指定する。今回は歩数。
-        ///   - quantitySamplePredicate: 今回は、今日を含めた過去８日間の歩数を取得したいため、今日−７日の日付を渡す。
-        ///   - options: 今日の日付を渡す。
-        ///   - anchorDate: 今日の日付を渡す。
+        ///   - quantitySamplePredicate: サンプルデータの検索条件。
+        ///   - options: サンプルデータの計算方法を指定するオプション。今回は１日の合計歩数がほしいので cumulativeSum を指定する。
+        ///   - anchorDate: 
         ///   - intervalComponents:取得範囲の指定（？）→ オプションの機能が分かっていません。
         /// - Returns: 開始日と終了日が指定された検索情報
         let query = HKStatisticsCollectionQuery(quantityType: quantityType,
