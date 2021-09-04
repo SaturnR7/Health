@@ -8,11 +8,12 @@
 import HealthKit
 import UIKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        let readDataTypes = Set([HKObjectType.quantityType(forIdentifier: .stepCount)!])
+        HKHealthStore().requestAuthorization(toShare: nil, read: readDataTypes) { _, _ in }
         self.getSteps()
     }
     

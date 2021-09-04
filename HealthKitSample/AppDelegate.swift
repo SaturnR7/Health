@@ -15,8 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let readDataTypes = Set([HKQuantityType.quantityType(forIdentifier: .stepCount)!])
-            HKHealthStore().requestAuthorization(toShare: nil, read: readDataTypes) { _, _ in }
         return true
     }
 
