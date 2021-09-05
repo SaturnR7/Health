@@ -21,7 +21,11 @@ final class ViewController: UIViewController {
     }
     
     private func getSteps() {
-        let startDate = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
+        
+        /// ７日前の日付を取得し、`startOfDay`で日の始まりを取得する。
+        let sevenDaysAgo = Calendar.current.date(byAdding: DateComponents(day: -7), to: Date())!
+        let startDate = Calendar.current.startOfDay(for: sevenDaysAgo)
+
         var sampleArray: [Double] = []
         let quantityType = HKObjectType.quantityType(forIdentifier: .stepCount)!
         
