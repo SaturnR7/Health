@@ -11,24 +11,27 @@ import UIKit
 final class ViewController: UIViewController {
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
         /// アクセスしたいデータ項目のタイプを `Set型` で格納する。
         /// 今回は歩数を取得したいので `.stepCount` を指定する。
         let readDataTypes = Set([HKObjectType.quantityType(forIdentifier: .stepCount)!])
         /// ユーザーにアクセス許可を求める。
         HKHealthStore().requestAuthorization(toShare: nil, read: readDataTypes) { _, _ in }
+        
         self.getSteps()
     }
     
     private func getSteps() {
         
+        var sampleArray: [Double] = []
+        let quantityType = HKObjectType.quantityType(forIdentifier: .stepCount)!
+        
         /// ７日前の日付を取得し、`startOfDay`で日の始まりを取得する。
         let sevenDaysAgo = Calendar.current.date(byAdding: DateComponents(day: -7), to: Date())!
         let startDate = Calendar.current.startOfDay(for: sevenDaysAgo)
 
-        var sampleArray: [Double] = []
-        let quantityType = HKObjectType.quantityType(forIdentifier: .stepCount)!
-        
         /// サンプルデータの検索条件を指定する。（サンプルデータのフィルタリング）
         /// 条件は、取得したいサンプルデータの期間（開始日〜終了日）を指定する。
         ///
