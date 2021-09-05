@@ -74,8 +74,7 @@ final class ViewController: UIViewController {
                 /// `sumQuantity` でサンプルデータの合計（１日の合計歩数）を取得する。
                 if let quantity = statistics.sumQuantity() {
                     /// サンプルデータは`doubleValue (戻り値はDouble型)`で取り出し、単位を指定して取得する。
-                    /// 単位：歩数の場合`HKUnit.count()`と指定する。
-                    /// 他の例では、歩行速度の場合：`HKUnit.meter()`、歩行距離の場合：`HKUnit(from: "m/s")`といった単位を指定する。
+                    /// 単位：歩数の場合`HKUnit.count()`と指定する。（歩行速度の場合：`HKUnit.meter()`、歩行距離の場合：`HKUnit(from: "m/s")`といった単位を指定する。）
                     let stepValue = quantity.doubleValue(for: HKUnit.count())
                     /// 取得した歩数を配列に格納する。
                     sampleArray.append(floor(stepValue))
