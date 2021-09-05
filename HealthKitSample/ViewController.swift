@@ -19,9 +19,9 @@ final class ViewController: UIViewController {
         /// アクセスしたいサンプルデータのタイプを `Set型` で格納する。今回は歩数を取得したいので `.stepCount` を指定する。
         /// また、平均歩行速度なら `.walkingSpeed`、歩行距離なら `.distanceWalkingRunning`など、許可を得たい項目を配列で指定する。
         let readDataTypes = Set([HKObjectType.quantityType(forIdentifier: .stepCount)!])
-        HKHealthStore().requestAuthorization(toShare: nil, read: readDataTypes) { _, _ in }
-        
-        self.getSteps()
+        HKHealthStore().requestAuthorization(toShare: nil, read: readDataTypes) { success, _ in
+            if success { self.getSteps() }
+        }
     }
     
     private func getSteps() {
