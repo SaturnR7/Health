@@ -16,6 +16,7 @@ final class ViewController: UIViewController {
         
         /// アクセスしたいデータ項目のタイプを `Set型` で格納する。
         /// 今回は歩数を取得したいので `.stepCount` を指定する。
+        /// また、兵器歩行速度なら `.walkingSpeed`、歩行距離なら `.distanceWalkingRunning`など、許可を得たい項目を配列で指定する。
         let readDataTypes = Set([HKObjectType.quantityType(forIdentifier: .stepCount)!])
         /// ユーザーにアクセス許可を求める。
         HKHealthStore().requestAuthorization(toShare: nil, read: readDataTypes) { _, _ in }
@@ -26,7 +27,6 @@ final class ViewController: UIViewController {
     private func getSteps() {
         
         var sampleArray: [Double] = []
-        let quantityType = HKObjectType.quantityType(forIdentifier: .stepCount)!
         
         /// ７日前の日付を取得し、`startOfDay`で日の始まりを取得する。
         let sevenDaysAgo = Calendar.current.date(byAdding: DateComponents(day: -7), to: Date())!
@@ -46,7 +46,7 @@ final class ViewController: UIViewController {
                                                     end: Date(),
                                                     options: .strictStartDate)
         
-        /// サンプルデータを取得するためのクエリを生成します。
+        /// サンプルデータを取得するためのクエリを生成する。
         ///
         /// - Parameters:
         ///   - quantityType: サンプルデータのタイプを指定する。（今回は歩数。）
@@ -57,13 +57,13 @@ final class ViewController: UIViewController {
         ///                 （こちらも詳しい情報ありましたらコメントいただけると幸いです）
         ///   - intervalComponents: サンプルの時間間隔の長さを指定する。今回は日別に歩数を取得したいので、間隔は１日で指定する。
         ///   @see https://developer.apple.com/documentation/healthkit/hkstatisticscollectionquery/1615199-init
-        let query = HKStatisticsCollectionQuery(quantityType: quantityType,
+        let query = HKStatisticsCollectionQuery(quantityType: HKObjectType.quantityType(forIdentifier: .stepCount)!,
                                                 quantitySamplePredicate: predicate,
                                                 options: .cumulativeSum,
                                                 anchorDate: startDate,
                                                 intervalComponents: DateComponents(day: 1))
         
-        /// クエリの結果（日別の歩数）を配列に格納します
+        /// クエリ結果を配列に格納します
         ///   @see https://developer.apple.com/documentation/healthkit/hkstatisticscollectionquery/1615755-initialresultshandler
         query.initialResultsHandler = { _, results, _ in
             /// `results (HKStatisticsCollection?)` からクエリ結果を取り出す。
@@ -73,10 +73,11 @@ final class ViewController: UIViewController {
                 /// `statistics` から最小単位（今回は１日分の歩数）のサンプルデータが返ってくる。
                 /// `sumQuantity` でサンプルデータの合計（１日の合計歩数）を取得する。
                 if let quantity = statistics.sumQuantity() {
-                    /// サンプルデータは`doubleValue (戻り値はDouble型)`で単位を指定して取得する。
-                    /// 単位は歩数の場合`HKUnit.count()`を指定する。他の例では、サンプルデータから速度や距離を取得する場合は、`HKUnit.meter()`や`HKUnit(from: "m/s")`と指定する。
-                    /// 取得した歩数を配列に格納する。
+                    /// サンプルデータは`doubleValue (戻り値はDouble型)`で取り出し、単位を指定して取得する。
+                    /// 単位：歩数の場合`HKUnit.count()`と指定する。
+                    /// 他の例では、歩行速度の場合：`HKUnit.meter()`、歩行距離の場合：`HKUnit(from: "m/s")`といった単位を指定する。
                     let stepValue = quantity.doubleValue(for: HKUnit.count())
+                    /// 取得した歩数を配列に格納する。
                     sampleArray.append(floor(stepValue))
                     print("sampleArray", sampleArray)
                 } else {
